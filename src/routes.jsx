@@ -5,11 +5,13 @@ import {
 import MainRoot from "./components/MainRoot/MainRoot";
 import Home from "./components/Pages/Home/Home";
 import Register from "./components/shared/Register/Register";
+import NotFound from "./components/Pages/NotFound/NotFound";
 
 const routes = createBrowserRouter([
     {
         path: "/",
         element: <MainRoot></MainRoot>,
+        errorElement: <NotFound></NotFound>,
         children: [
             {
                 path: "/",

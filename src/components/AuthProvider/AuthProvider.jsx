@@ -1,4 +1,4 @@
-import React, { Children, createContext, useEffect, useState } from 'react';
+import { Children, createContext, useEffect, useState } from 'react';
 import app from '../../firebase/firebase.config';
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import useAxiosPublic from '../hooks/useAxiosPublic';
@@ -23,12 +23,13 @@ const AuthProvider = ({ children }) => {
 
     const signIn = (email, password) => {
         setLoading(true);
-        return signInWithEmailAndPassword(auth, email, password);
+        return signInWithEmailAndPassword(auth, email, password)
+            .finally(() => setLoading(false));
     }
 
     const logOut = () => {
         setLoading(true);
-        return signOut(auth);
+        return signOut(auth).finally(() => setLoading(false));;
     }
 
     useEffect(() => {
@@ -43,7 +44,6 @@ const AuthProvider = ({ children }) => {
                         if (res.data?.token) {
                             localStorage.setItem('access-token', res.data?.token);
                             setLoading(false);
-
                         }
                     })
                     .catch(error => {
@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
             }
         })
         return () => unsubscribe();
-    }, axiosPublic)
+    }, [axiosPublic])
 
     const authInfo = {
         user,
@@ -64,8 +64,8 @@ const AuthProvider = ({ children }) => {
         createUser,
         updateUser,
         signIn,
-
-        logOut
+        logOut,
+        loading,
 
     }
     return (

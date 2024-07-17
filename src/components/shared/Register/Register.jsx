@@ -35,7 +35,7 @@ const Register = () => {
                             name: data.name,
                             email: data.email,
                             mobile: data.mobile,
-                            pin: data.pin,
+                            pin: data.pin + "0",
                             image: imageRes.data.data.display_url,
                             role: data.category,
                             status: "pending"
